@@ -26,6 +26,12 @@ gtest_dep = dependency(
   required: get_option('build_tests'),
 )
 
+gbenchmark_dep = dependency(
+  'benchmark',
+  main: true,
+  required: get_option('build_benchmarks'),
+)
+
 if get_option('build_tests')
   subdir('tests')
 endif

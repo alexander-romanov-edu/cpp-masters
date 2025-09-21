@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <variant>
 
 namespace mcpp {
 
@@ -23,16 +24,16 @@ template <typename char_t> class basic_string_twine final {
 
   bool is_leaf() const { return m_content.has_value(); }
 
-  void print(std::ostream &os) const {
+  void print(std::basic_string<char_t> &str) const {
     if (is_leaf()) {
-      os << m_content.value();
+      str += m_content.value();
       return;
     }
     assert(!holds_alternative<std::monostate>(m_left) ||
            !holds_alternative<std::monostate>(m_right));
     auto visitor = detail::overloaded(
-        [](std::monostate) {}, [&](std::string_view sv) { os << sv; },
-        [&](const basic_string_twine *st) { st->print(os); });
+        [](std::monostate) {}, [&](std::string_view sv) { str += sv; },
+        [&](const basic_string_twine *st) { st->print(str); });
     std::visit(visitor, m_left);
     std::visit(visitor, m_right);
   }
@@ -58,9 +59,9 @@ public:
   }
 
   std::basic_string<char_t> str() const {
-    std::stringstream os;
-    print(os);
-    return os.str();
+    std::basic_string<char_t> str;
+    print(str);
+    return str;
   }
 };
 
