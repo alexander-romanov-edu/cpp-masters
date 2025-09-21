@@ -9,16 +9,3 @@ To install all needed dependencies run [nix](https://nixos.org/download/)
 ```sh
 nix develop
 ```
-
-## Build
-
-```sh
-meson setup build
-meson compile -C build
-```
-
-Or using nix build:
-
-```sh
-nix build .
-```
