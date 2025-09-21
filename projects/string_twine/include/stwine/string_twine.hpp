@@ -16,8 +16,6 @@ template <typename... Fs> struct overloaded final : public Fs... {
 } // namespace detail
 
 template <typename char_t> class basic_string_twine final {
-  // using node_t = detail::stwine_node_t<char_t>;
-  // node_t *m_root;
   using string_view = std::basic_string_view<char_t>;
   std::optional<string_view> m_content;
   std::variant<std::monostate, const basic_string_twine *, string_view> m_left;
